@@ -1,7 +1,7 @@
 import webbrowser
 from threading import Timer
 from waitress import serve
-from app import app  # pastikan 'app' adalah instance Flask
+from app import app
 
 def open_browser():
     webbrowser.open_new("http://localhost")
