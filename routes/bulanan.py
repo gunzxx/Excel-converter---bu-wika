@@ -22,6 +22,7 @@ def bulanan_get():
         ]
         for report in results
     ]
+    reports.reverse()
 
     return render_template('bulanan.html', reports=reports)
     
