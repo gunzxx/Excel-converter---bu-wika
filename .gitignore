@@ -1,2 +1,4 @@
-output/
+static/output/**/*
+
+!static/output/**/.gitkeep
 # */__pycache__

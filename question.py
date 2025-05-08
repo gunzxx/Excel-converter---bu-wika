@@ -63,5 +63,13 @@ datakolom2 | 100,000 | 2
 datakolom3 | 300,000 | 615
 datakolom3 | 200,000 | 1
 diubah menjadi seperti berikut:
-[600,000, 2, 3,100,000, 19, 500,000, 616]
+[600,000, 2, 3,100,000, 19, 500,
+000, 616]
 bagaimana caranya?
+
+
+
+Saya memiliki list of string timestamp, saya ingin mengubah list tersebut menjadi list of list yang berisi timestamp dan timestamp yang telah di format, contoh:
+[
+    ["1746672544.7356393", "06-06-2025 01-01-01"],
+]

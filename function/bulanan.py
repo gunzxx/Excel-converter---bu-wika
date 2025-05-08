@@ -17,7 +17,7 @@ def pdfToList(pages: list[page.Page]) -> list:
             "horizontal_strategy": "text",
             "snap_tolerance": 3,
             "join_tolerance": 3,
-            "intersection_tolerance": 5
+            "intersection_tolerance": 5,
         }
         table = page.extract_table(table_settings=custom_settings)
 

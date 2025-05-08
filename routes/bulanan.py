@@ -1,7 +1,9 @@
-from flask import Blueprint, render_template, request, send_file, jsonify
+from flask import Blueprint, render_template, request, send_file, current_app
 import pdfplumber
 from time import time
 import pandas as pd
+from pathlib import Path
+from datetime import datetime
 
 # import sys, os
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../function')))
@@ -11,7 +13,17 @@ bulanan = Blueprint('bulanan', __name__)
 
 @bulanan.route('/bulanan')
 def bulanan_get():
-    return render_template('bulanan.html')
+    folderStatic = Path(current_app.static_folder)/'output/bulanan'
+    results = [f.name for f in folderStatic.glob('*.xlsx')]
+    reports = [
+        [
+            report,
+            datetime.fromtimestamp(float(report[:-5])).strftime("%d-%m-%Y %H:%M:%S")
+        ]
+        for report in results
+    ]
+
+    return render_template('bulanan.html', reports=reports)
     
 @bulanan.route('/bulanan', methods=['POST'])
 def bulanan_post():
@@ -70,11 +82,10 @@ def bulanan_post():
             data12 = pdfToList(pages=pdf.pages)
             finishData = handleAddData(oldData=finishData, inputList=data12, month="DESEMBER")
     
-    # return [data1, finishData]
     # return data2
 
     df = pd.DataFrame(finishData, columns=headerTable)
     # df = pd.DataFrame(finishData)
-    output_path = 'output/'+str(time())+".xlsx"
+    output_path = 'static/output/bulanan/'+str(time())+".xlsx"
     df.to_excel(output_path, index=False)
     return send_file(output_path, as_attachment=True)

@@ -1,101 +1,117 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Import PDF</title>
-    <link rel="stylesheet" href="/static/css/reset.css">
-    <link rel="stylesheet" href="/static/css/bulanan.css">
-    <link rel="stylesheet" href="/static/css/bg.css">
-</head>
-<body>
+    <link rel="stylesheet" href="/static/css/reset.css" />
+    <link rel="stylesheet" href="/static/css/bulanan.css" />
+    <link rel="stylesheet" href="/static/css/bg.css" />
+  </head>
+  <body>
     <div class="card-container">
-        <div class="header">
-            <a href="/">
-                <img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhklEQVR4nO2WOwqAMBAFBz8XEJKb6aktRFt7LfUEsQkiaCrJruAOvCLVQMK+DRjGXymAWlrqgQGYgVJK6oARCDGNhjRIiN2DNLvYJaRZxR6YEtK3WYFOWhpi9qfJ6DNLQ+q51MRe4Kq3VAnllC9A+7lxUi0Q1cpUXRKqa/H6EajOk2EY3DkANGS6e2z3DR0AAAAASUVORK5CYII=" alt="left">
-            </a>
-            <h1>Unggah PDF untuk diolah ke excel.</h1>
-        </div>
-        <div class="content">
-            <form method="post" enctype="multipart/form-data">
-                <div class="form-group">
-                    <label for="januari">Januari</label>
-                    <input id="januari" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="februari">Februari</label>
-                    <input id="februari" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="maret">Maret</label>
-                    <input id="maret" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="april">April</label>
-                    <input id="april" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="mei">Mei</label>
-                    <input id="mei" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="juni">Juni</label>
-                    <input id="juni" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="juli">Juli</label>
-                    <input id="juli" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="agustus">Agustus</label>
-                    <input id="agustus" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="september">September</label>
-                    <input id="september" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="oktober">Oktober</label>
-                    <input id="oktober" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="november">November</label>
-                    <input id="november" type="file" name="pdf" accept=".pdf">
-                </div>
-                <div class="form-group">
-                    <label for="desember">Desember</label>
-                    <input id="desember" type="file" name="pdf" accept=".pdf">
-                </div>
-                <button>Upload</button>
-            </form>
-        </div>
+      <div class="header">
+        <a href="/">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhklEQVR4nO2WOwqAMBAFBz8XEJKb6aktRFt7LfUEsQkiaCrJruAOvCLVQMK+DRjGXymAWlrqgQGYgVJK6oARCDGNhjRIiN2DNLvYJaRZxR6YEtK3WYFOWhpi9qfJ6DNLQ+q51MRe4Kq3VAnllC9A+7lxUi0Q1cpUXRKqa/H6EajOk2EY3DkANGS6e2z3DR0AAAAASUVORK5CYII="
+            alt="left"
+          />
+        </a>
+        <h1>Unggah PDF untuk diolah ke excel.</h1>
+      </div>
+      <div class="content">
+        <form method="post" enctype="multipart/form-data">
+          <div class="form-group">
+            <label for="januari">Januari</label>
+            <input id="januari" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="februari">Februari</label>
+            <input id="februari" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="maret">Maret</label>
+            <input id="maret" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="april">April</label>
+            <input id="april" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="mei">Mei</label>
+            <input id="mei" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="juni">Juni</label>
+            <input id="juni" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="juli">Juli</label>
+            <input id="juli" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="agustus">Agustus</label>
+            <input id="agustus" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="september">September</label>
+            <input id="september" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="oktober">Oktober</label>
+            <input id="oktober" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="november">November</label>
+            <input id="november" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <div class="form-group">
+            <label for="desember">Desember</label>
+            <input id="desember" type="file" name="pdf" accept=".pdf" />
+          </div>
+          <button>Upload</button>
+        </form>
+      </div>
     </div>
 
+    <div class="card-container">
+      <div id="history">
+        <h2>Riwayat Laporan:</h2>
+        <div class="history-container">
+          {% for report in reports %}
+          <div class="history-list">
+            <p>{{ loop.index }}. {{ report[1] }}</p>
+            <a href="/static/output/bulanan/{{ report[0] }}">Download</a>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
 
     <div id="background">
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-        <div><span></span></div>
-      </div>
-</body>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+    </div>
+  </body>
 </html>
