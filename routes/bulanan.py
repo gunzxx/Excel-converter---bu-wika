@@ -7,7 +7,7 @@ from datetime import datetime
 
 # import sys, os
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../function')))
-from function.bulanan import handleAddData, pdfToList
+from function.bulanan import handleAddData, pdfToList, getTransaksiOnly, handleMutasiTransaksi, getTransaksiBertambah, getTransaksiBerkurang
 
 bulanan = Blueprint('bulanan', __name__)
 
@@ -83,10 +83,23 @@ def bulanan_post():
             data12 = pdfToList(pages=pdf.pages)
             finishData = handleAddData(oldData=finishData, inputList=data12, month="DESEMBER")
     
-    # return data2
+    transaksiOnly = getTransaksiOnly(finishData)
+    bertambahBerkurang = handleMutasiTransaksi(transaksiOnly)
+    bertambah = getTransaksiBertambah(transaksiOnly)
+    berkurang = getTransaksiBerkurang(transaksiOnly)
+    headerBertambahBerkurang = ['No', 'Jenis Transaksi', 'Qty', 'Intrakompatabel']
+    # return berkurang
 
-    df = pd.DataFrame(finishData, columns=headerTable)
-    # df = pd.DataFrame(finishData)
+    df1 = pd.DataFrame(finishData, columns=headerTable)
+    df2 = pd.DataFrame(bertambahBerkurang, columns=headerTable)
+    df3 = pd.DataFrame(bertambah, columns=headerBertambahBerkurang)
+    df4 = pd.DataFrame(berkurang, columns=headerBertambahBerkurang)
+    
     output_path = 'static/output/bulanan/'+str(time())+".xlsx"
-    df.to_excel(output_path, index=False)
+    # df1.to_excel(output_path, index=False)
+    with pd.ExcelWriter(output_path) as writer:
+        df1.to_excel(writer, sheet_name='RINCIAN', index=False)
+        df2.to_excel(writer, sheet_name='Bertambah dan Berkurang', index=False)
+        df3.to_excel(writer, sheet_name='Bertambah', index=False)
+        df4.to_excel(writer, sheet_name='Berkurang', index=False)
     return send_file(output_path, as_attachment=True)

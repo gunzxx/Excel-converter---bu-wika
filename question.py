@@ -73,3 +73,89 @@ Saya memiliki list of string timestamp, saya ingin mengubah list tersebut menjad
 [
     ["1746672544.7356393", "06-06-2025 01-01-01"],
 ]
+
+
+Saya memiliki list:
+data = [
+    ['row1', '', 0, 1, 0, 0, 1],
+    ['', 'data1', 0, 1, 0, 0, 1],
+    ['row2', '', 3, 0, '11', 14, 28],
+    ['', 'data1', 0, 0, '2', 0, 2],
+    ['', 'data2', 1, 0, '5', 9, 15],
+    ['', 'data3', 2, 0, '4', 5, 11],
+    ['row3', '', 1, 0, 4, '(7)', 12],
+    ['', 'data1', 0, 0, 0, '(3)', 3],
+    ['', 'data2', 0, 0, 4, '4', 8],
+    ['', 'data3', 1, 0, 0, 0, 1],
+    ['row4', '', 0, 0, 3, 0, 3],
+    ['', 'data3', 0, 0, 3, 0, 3],
+    ['row5', '', 12, 0, 0, 0, 12],
+    ['', 'data2', 12, 0, 0, 0, 12],
+]
+
+
+Saya memiliki list:
+data = [
+    ['row1', '', 0, 1, 0, 0, 1],
+    ['row2', '', 3, 0, '11', 14, 28],
+    ['row3', '', 1, 0, 4, '(7)', 12],
+    ['row4', '', 0, 0, -3, 0, -3],
+    ['row5', '', -12, 0, 0, 0, -12],
+]
+Saya ingin menjumlahkan data di list tersebut dari kolom ke 3 sampai 1 kolom sebelum kolom terakhir menjadi data seperti berikut:
+
+output = [
+    ['bertambah', '', 4, 1, 15, 21, ''],
+    ['bertambah', '', -12, 0, -3, 0, ''],
+]
+
+bagaimana caranya?
+
+
+
+
+data = [
+[
+"Penghentiaan Aset Dari Penggunaan (401)",
+459,
+"-2.864.563.586"
+],
+[
+"Pencatatan Barang Yang Mau Dihapuskan (911)",
+138,
+"-186.959.176"
+],
+[
+"Internal Transfer Keluar (921)",
+503,
+"-6.027.542.213"
+]
+]
+
+bagaimana cara memberikan index dan menambahkan total data tersebut manjadi:
+[
+[
+1,
+"Penghentiaan Aset Dari Penggunaan (401)",
+459,
+"-2.864.563.586"
+],
+[
+2,
+"Pencatatan Barang Yang Mau Dihapuskan (911)",
+138,
+"-186.959.176"
+],
+[
+3,
+"Internal Transfer Keluar (921)",
+503,
+"-6.027.542.213"
+],
+[
+'',
+"Jumlah",
+110,
+"-15.106.607.188",
+],
+],
