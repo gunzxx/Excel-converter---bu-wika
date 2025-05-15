@@ -8,7 +8,7 @@ import os
 
 # import sys, os
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../function')))
-from function.bulanan import handleAddData, pdfToList, getTransaksiOnly, handleMutasiTransaksi, getTransaksiBertambah, getTransaksiBerkurang
+from function.bulanan import handleAddData, pdfToList, getTransaksiOnly, handleMutasiTransaksi, getTransaksiBertambah, getTransaksiBerkurang, getKolomBertambah, getKolomBerkurang
 
 bulanan = Blueprint('bulanan', __name__)
 
@@ -85,24 +85,65 @@ def bulanan_post():
     
     transaksiOnly = getTransaksiOnly(finishData)
     bertambahBerkurang = handleMutasiTransaksi(transaksiOnly)
-    bertambah = getTransaksiBertambah(transaksiOnly)
-    berkurang = getTransaksiBerkurang(transaksiOnly)
+    peralatanDanMesinBertambah = getKolomBertambah(transaksiOnly, 6)
+    peralatanDanMesinBerkurang = getKolomBerkurang(transaksiOnly, 6)
+    gedungDanBangunanBertambah = getKolomBertambah(transaksiOnly, 8)
+    gedungDanBangunanBerkurang = getKolomBerkurang(transaksiOnly, 8)
+    jalanIrigasiBertambah = getKolomBertambah(transaksiOnly, 10)
+    jalanIrigasiBerkurang = getKolomBerkurang(transaksiOnly, 10)
+    asetTetapLainnyaBertambah = getKolomBertambah(transaksiOnly, 12)
+    asetTetapLainnyaBerkurang = getKolomBerkurang(transaksiOnly, 12)
+    kdpBertambah = getKolomBertambah(transaksiOnly, 14)
+    kdpBerkurang = getKolomBerkurang(transaksiOnly, 14)
+    asetTidakWujudBertambah = getKolomBertambah(transaksiOnly, 16)
+    asetTidakWujudBerkurang = getKolomBerkurang(transaksiOnly, 16)
+    asetTidakOperasionalBertambah = getKolomBertambah(transaksiOnly, 18)
+    asetTidakOperasionalBerkurang = getKolomBerkurang(transaksiOnly, 18)
+    allBertambah = getTransaksiBertambah(transaksiOnly)
+    allBerkurang = getTransaksiBerkurang(transaksiOnly)
     # return berkurang
 
     headerTable = ['KETERANGAN', '', 'Persediaan', '', 'Tanah', '', 'Peralatan dan Mesin', '', 'Gedung dan Bangunan', '', 'Jalan, Irigasi, Jaringan & Jembatan', '', 'Aset Tetap Lainnya', '', 'KDP', '', 'Aset Tidak Wujud', '', 'Aset Tidak Operasional', 'Total']
     headerBertambahBerkurang = ['No', 'Jenis Transaksi', 'Qty', 'Intrakompatabel']
-    df1 = pd.DataFrame(finishData, columns=headerTable)
-    df2 = pd.DataFrame(bertambahBerkurang, columns=headerTable)
-    df3 = pd.DataFrame(bertambah, columns=headerBertambahBerkurang)
-    df4 = pd.DataFrame(berkurang, columns=headerBertambahBerkurang)
+    rincian = pd.DataFrame(finishData, columns=headerTable)
+    sheetBertambahBerkurang = pd.DataFrame(bertambahBerkurang, columns=headerTable)
+    sheetPeralatanDanMesinBertambah = pd.DataFrame(peralatanDanMesinBertambah, columns=headerBertambahBerkurang)
+    sheetPeralatanDanMesinBerkurang = pd.DataFrame(peralatanDanMesinBerkurang, columns=headerBertambahBerkurang)
+    sheetGedungDanBangunanBertambah = pd.DataFrame(gedungDanBangunanBertambah, columns=headerBertambahBerkurang)
+    sheetGedungDanBangunanBerkurang = pd.DataFrame(gedungDanBangunanBerkurang, columns=headerBertambahBerkurang)
+    sheetJalanIrigasiBertambah = pd.DataFrame(jalanIrigasiBertambah, columns=headerBertambahBerkurang)
+    sheetJalanIrigasiBerkurang = pd.DataFrame(jalanIrigasiBerkurang, columns=headerBertambahBerkurang)
+    sheetAsetTetapLainnyaBertambah = pd.DataFrame(asetTetapLainnyaBertambah, columns=headerBertambahBerkurang)
+    sheetAsetTetapLainnyaBerkurang = pd.DataFrame(asetTetapLainnyaBerkurang, columns=headerBertambahBerkurang)
+    sheetKdpBertambah = pd.DataFrame(kdpBertambah, columns=headerBertambahBerkurang)
+    sheetKdpBerkurang = pd.DataFrame(kdpBerkurang, columns=headerBertambahBerkurang)
+    sheetAsetTidakWujudBertambah = pd.DataFrame(asetTidakWujudBertambah, columns=headerBertambahBerkurang)
+    sheetAsetTidakWujudBerkurang = pd.DataFrame(asetTidakWujudBerkurang, columns=headerBertambahBerkurang)
+    sheetAsetTidakOperasionalBertambah = pd.DataFrame(asetTidakOperasionalBertambah, columns=headerBertambahBerkurang)
+    sheetAsetTidakOperasionalBerkurang = pd.DataFrame(asetTidakOperasionalBerkurang, columns=headerBertambahBerkurang)
+    sheetAllBertambah = pd.DataFrame(allBertambah, columns=headerBertambahBerkurang)
+    sheetAllBerkurang = pd.DataFrame(allBerkurang, columns=headerBertambahBerkurang)
     
     output_path = 'static/output/bulanan/'+str(time())+".xlsx"
-    # df1.to_excel(output_path, index=False)
     with pd.ExcelWriter(output_path) as writer:
-        df1.to_excel(writer, sheet_name='RINCIAN', index=False)
-        df2.to_excel(writer, sheet_name='Bertambah dan Berkurang', index=False)
-        df3.to_excel(writer, sheet_name='Bertambah', index=False)
-        df4.to_excel(writer, sheet_name='Berkurang', index=False)
+        rincian.to_excel(writer, sheet_name='RINCIAN', index=False)
+        sheetBertambahBerkurang.to_excel(writer, sheet_name='Bertambah dan Berkurang', index=False)
+        sheetPeralatanDanMesinBertambah.to_excel(writer, sheet_name="Peralatan dan Mesin", index=False, startrow=0)
+        sheetPeralatanDanMesinBerkurang.to_excel(writer, sheet_name="Peralatan dan Mesin", index=False, startrow=len(sheetPeralatanDanMesinBertambah) + 3)
+        sheetGedungDanBangunanBertambah.to_excel(writer, sheet_name="Gedung dan Bangunan", index=False, startrow=0)
+        sheetGedungDanBangunanBerkurang.to_excel(writer, sheet_name="Gedung dan Bangunan", index=False, startrow=len(sheetGedungDanBangunanBertambah) + 3)
+        sheetJalanIrigasiBertambah.to_excel(writer, sheet_name="Jalan, Irigasi, Jaringan & Jembatan", index=False, startrow=0)
+        sheetJalanIrigasiBerkurang.to_excel(writer, sheet_name="Jalan, Irigasi, Jaringan & Jembatan", index=False, startrow=len(sheetJalanIrigasiBertambah) + 3)
+        sheetAsetTetapLainnyaBertambah.to_excel(writer, sheet_name="Aset Tetap Lainnya", index=False, startrow=0)
+        sheetAsetTetapLainnyaBerkurang.to_excel(writer, sheet_name="Aset Tetap Lainnya", index=False, startrow=len(sheetAsetTetapLainnyaBertambah) + 3)
+        sheetKdpBertambah.to_excel(writer, sheet_name="KDP", index=False, startrow=0)
+        sheetKdpBerkurang.to_excel(writer, sheet_name="KDP", index=False, startrow=len(sheetKdpBertambah) + 3)
+        sheetAsetTidakWujudBertambah.to_excel(writer, sheet_name="Aset Tidak Wujud", index=False, startrow=0)
+        sheetAsetTidakWujudBerkurang.to_excel(writer, sheet_name="Aset Tidak Wujud", index=False, startrow=len(sheetAsetTidakWujudBertambah) + 3)
+        sheetAsetTidakOperasionalBertambah.to_excel(writer, sheet_name="Aset Tidak Operasional", index=False, startrow=0)
+        sheetAsetTidakOperasionalBerkurang.to_excel(writer, sheet_name="Aset Tidak Operasional", index=False, startrow=len(sheetAsetTidakOperasionalBertambah) + 3)
+        sheetAllBertambah.to_excel(writer, sheet_name='Total Bertambah Semua Jenis Transaksi', index=False)
+        sheetAllBerkurang.to_excel(writer, sheet_name='Total Berkurang Semua Jenis Transaksi', index=False)
     return send_file(output_path, as_attachment=True)
 
 

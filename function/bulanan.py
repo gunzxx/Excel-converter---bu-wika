@@ -245,3 +245,43 @@ def getTransaksiBerkurang(transactions:list = []):
     
     result.append(['', 'Jumlah', sumQty, sumTotal])
     return result
+
+def getKolomBertambah(transactions:list, kolom:int) -> list:
+    result = []
+    sumQty = 0
+    sumTotal = 0
+    indexResult = 1
+
+    for row in transactions:
+        if parseNumber(row[kolom]) <= 0:
+            continue
+
+        sumTotal = toDefaultNumber(parseNumber(row[kolom]) + parseNumber(sumTotal))
+        sumQty = toDefaultNumber(parseNumber(row[kolom-1]) + parseNumber(sumQty))
+        
+        result.append([indexResult, row[0], row[kolom-1], row[(kolom)]])
+        indexResult+=1
+    
+    result.append(['', 'Jumlah', sumQty, sumTotal])
+
+    return result
+
+def getKolomBerkurang(transactions:list, kolom:int) -> list:
+    result = []
+    sumQty = 0
+    sumTotal = 0
+    indexResult = 1
+
+    for row in transactions:
+        if parseNumber(row[kolom]) >= 0:
+            continue
+
+        sumTotal = toDefaultNumber(parseNumber(row[kolom]) + parseNumber(sumTotal))
+        sumQty = toDefaultNumber(parseNumber(row[kolom-1]) + parseNumber(sumQty))
+        
+        result.append([indexResult, row[0], row[kolom-1], row[(kolom)]])
+        indexResult+=1
+    
+    result.append(['', 'Jumlah', sumQty, sumTotal])
+
+    return result
