@@ -159,3 +159,23 @@ bagaimana cara memberikan index dan menambahkan total data tersebut manjadi:
 "-15.106.607.188",
 ],
 ],
+
+
+
+
+bagaimana cara mengubah:
+data = [ 
+    [4, 1,, 1],
+    [12, -1, 1],
+    [10, 0, 1],
+    [0, 0, 1],
+]
+menjadi
+output = [
+    [4, 1],
+    [10, 0],
+]
+
+dengan syarat:
+- jika ada bilangan negatif, maka row di hapus
+- jika semua nilai 0, maka row dihapus

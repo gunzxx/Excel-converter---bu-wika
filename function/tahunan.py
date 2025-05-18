@@ -1,7 +1,7 @@
 from pdfplumber import page
 import re
 
-from function.main_fuction import parseNumber, parseNumber2, toDefaultNumber, addNumber
+from function.main_fuction import parseNumber, parseNumber2, toDefaultNumber, toPositif
 
 
 def pdfToList(pages: list[page.Page]) -> list:
@@ -189,18 +189,38 @@ def getKolomBertambah(transactions:list, kolom:int) -> list:
     sumQty = 0
     sumTotal = 0
     indexResult = 1
+    
+    filtered = [row for row in transactions if parseNumber(row[kolom]) >= 0 and parseNumber(row[kolom-1]) >= 0]
+
+    for row in filtered:
+        if parseNumber(row[kolom-1]) == 0:
+            continue
+
+        sumQty = toDefaultNumber(parseNumber(row[kolom-1]) + parseNumber(sumQty))
+        sumTotal = toDefaultNumber(parseNumber(row[kolom]) + parseNumber(sumTotal))
+        
+        result.append([indexResult, row[0], row[kolom-1], row[(kolom)]])
+        indexResult+=1
+    
+    result.append(['', 'Jumlah', sumQty, sumTotal])
+
+    return result
+
+def getKolomPersediaanBertambah(transactions:list, kolom:int) -> list:
+    result = []
+    sumTotal = 0
+    indexResult = 1
 
     for row in transactions:
         if parseNumber(row[kolom]) <= 0:
             continue
 
         sumTotal = toDefaultNumber(parseNumber(row[kolom]) + parseNumber(sumTotal))
-        sumQty = toDefaultNumber(parseNumber(row[kolom-1]) + parseNumber(sumQty))
         
         result.append([indexResult, row[0], row[kolom-1], row[(kolom)]])
         indexResult+=1
     
-    result.append(['', 'Jumlah', sumQty, sumTotal])
+    result.append(['', 'Jumlah', 0, sumTotal])
 
     return result
 
@@ -223,3 +243,15 @@ def getKolomBerkurang(transactions:list, kolom:int) -> list:
     result.append(['', 'Jumlah', sumQty, sumTotal])
 
     return result
+
+def rekapMutasi(saldo: list = [0,0], bertambah: list = [0,0], berkurang: list = [0,0]):
+    output = []
+    sisa = [0,0]
+    berkurang = [ toDefaultNumber(toPositif(col)) for col in berkurang ]
+
+    sisa[0] = toDefaultNumber(parseNumber(saldo[0]) + parseNumber(bertambah[0]) - parseNumber(berkurang[0]))
+    sisa[1] = toDefaultNumber(parseNumber(saldo[1]) + parseNumber(bertambah[1]) - parseNumber(berkurang[1]))
+
+    output = saldo + bertambah + berkurang + sisa
+
+    return [output]

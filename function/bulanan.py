@@ -1,7 +1,7 @@
 from pdfplumber import page
 import re
 
-from function.main_fuction import parseNumber, parseNumber2, toDefaultNumber, addNumber, checkIsNumber
+from function.main_fuction import parseNumber, parseNumber2, toDefaultNumber, addNumber, toPositif
 
 
 def pdfToList(pages: list[page.Page]) -> list:
@@ -92,6 +92,127 @@ def pdfToList(pages: list[page.Page]) -> list:
     return extractData
 
 
+def handleSaldo(pages: list[page.Page]) -> list:
+    total = 0
+    jenisData = [
+        "Barang Konsumsi, Bahan untuk Pemeliharaan, Suku Cadang, Bahan Baku, Persediaan Lainnya",
+        "Tanah",
+        "Peralatan dan Mesin",
+        "Gedung dan Bangunan",
+        "Jalan dan Jembatan,134112 Irigasi,134113 Jaringan",
+        "Aset Tetap Lainnya",
+        "Konstruksi Dalam Pengerjaan",
+        "Hak Cipta,Software,Lisensi,Aset Tak Berwujud Lainnya",
+        "Aset Tetap yang tidak digunakan dalam operasi pemerintahan",
+    ]
+    rowData = ['','',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+
+    for page in pages:
+        tahunAnggaran = ''
+        text = page.extract_text()
+        custom_settings = {
+            # "vertical_strategy": "lines",
+            # "horizontal_strategy": "text",
+            # "snap_tolerance": 3,
+            # "join_tolerance": 3,
+            # "intersection_tolerance": 5,
+        }
+        table = page.extract_table(table_settings=custom_settings)
+
+        # mencari tahun jenis anggaran
+        if text:
+            cocoks = re.findall(r'^tahun anggaran\s*(.*)', text, re.MULTILINE | re.IGNORECASE)
+            tahunAnggaran += f"1 Januari {parseNumber(cocoks[0]) + 1}" if len(cocoks) > 0 else ''
+
+        rowData[0] = tahunAnggaran
+
+        # mencari jumlah pengeluaran di tiap transaksi
+        if table:
+            for row in table:
+                if any(kolom == '' or kolom == None or '(' in kolom for kolom in row): continue
+                # extractData.append(row)
+
+                if row[1].lower() in jenisData[0].lower():
+                    rowData[2] = toDefaultNumber(parseNumber(rowData[2]) + parseNumber(row[2]))
+                    total += parseNumber(row[2])
+                elif row[1].lower() in jenisData[1].lower():
+                    rowData[4] = toDefaultNumber(parseNumber(rowData[4]) + parseNumber(row[2]))
+                    total += parseNumber(row[2])
+                elif row[1].lower() in jenisData[2].lower():
+                    rowData[6] = toDefaultNumber(parseNumber(rowData[6]) + parseNumber(row[2]))
+                    total += parseNumber(row[2])
+                elif row[1].lower() in jenisData[3].lower():
+                    rowData[8] = toDefaultNumber(parseNumber(rowData[8]) + parseNumber(row[2]))
+                    total += parseNumber(row[2])
+                elif row[1].lower() in jenisData[4].lower():
+                    rowData[10] = toDefaultNumber(parseNumber(rowData[10]) + parseNumber(row[2]))
+                    total += parseNumber(row[2])
+                elif row[1].lower() in jenisData[5].lower():
+                    rowData[12] = toDefaultNumber(parseNumber(rowData[12]) + parseNumber(row[2]))
+                    total += parseNumber(row[2])
+                elif row[1].lower() in jenisData[6].lower():
+                    rowData[14] = toDefaultNumber(parseNumber(rowData[14]) + parseNumber(row[2]))
+                    total += parseNumber(row[2])
+                elif row[1].lower() in jenisData[7].lower():
+                    rowData[16] = toDefaultNumber(parseNumber(rowData[16]) + parseNumber(row[2]))
+                    total += parseNumber(row[2])
+                elif row[1].lower() in jenisData[8].lower():
+                    rowData[18] = toDefaultNumber(parseNumber(rowData[18]) + parseNumber(row[2]))
+                    total += parseNumber(row[2])
+
+    rowData[-1] = toDefaultNumber(total)
+    return rowData
+
+def handleKuantitas(pages: list[page.Page], saldo: list) -> list:
+    rowData = saldo.copy()
+    extract = []
+    jenisData = [
+        "Tanah",
+        "Peralatan dan Mesin",
+        "Gedung dan Bangunan",
+        "Jalan dan Jembatan, Irigasi, Jaringan",
+        "Aset Tetap Lainnya",
+        "Konstruksi Dalam Pengerjaan",
+        "Hak Cipta,Software,Lisensi,Aset Tak Berwujud Lainnya",
+        "Aset Tetap yang tidak digunakan dalam operasi pemerintahan",
+    ]
+
+    for page in pages:
+        tahunAnggaran = ''
+        text = page.extract_text()
+        table = page.extract_table()
+
+        # mencari tahun jenis anggaran
+        if text:
+            cocoks = re.findall(r'^tahun anggaran\s*(.*)', text, re.MULTILINE | re.IGNORECASE)
+            tahunAnggaran += f"1 Januari {parseNumber(cocoks[0]) + 1}" if len(cocoks) > 0 else ''
+
+        # mencari jumlah pengeluaran di tiap transaksi
+        if table:
+            table = table[4:]
+            # table = [row for row in table if row[2] != '' or row[2] != None]
+            for row in table:
+                if (row[2] == '' or row[2] == None) and (row[1] != None or row[1] != '') and row[0] != 'TOTAL':
+                    # extract.append(row)
+                    if row[1].lower() in jenisData[0].lower():
+                        rowData[3] = toDefaultNumber(parseNumber(rowData[3]) + parseNumber(row[9]))
+                    elif row[1].lower() in jenisData[1].lower():
+                        rowData[5] = toDefaultNumber(parseNumber(rowData[5]) + parseNumber(row[9]))
+                    elif row[1].lower() in jenisData[2].lower():
+                        rowData[7] = toDefaultNumber(parseNumber(rowData[7]) + parseNumber(row[9]))
+                    elif row[1].lower() in jenisData[3].lower():
+                        rowData[9] = toDefaultNumber(parseNumber(rowData[9]) + parseNumber(row[9]))
+                    elif row[1].lower() in jenisData[4].lower():
+                        rowData[11] = toDefaultNumber(parseNumber(rowData[11]) + parseNumber(row[9]))
+                    elif row[1].lower() in jenisData[5].lower():
+                        rowData[13] = toDefaultNumber(parseNumber(rowData[13]) + parseNumber(row[9]))
+                    elif row[1].lower() in jenisData[6].lower():
+                        rowData[15] = toDefaultNumber(parseNumber(rowData[15]) + parseNumber(row[9]))
+                    elif row[1].lower() in jenisData[7].lower():
+                        rowData[17] = toDefaultNumber(parseNumber(rowData[17]) + parseNumber(row[9]))
+    return rowData
+
+
 # Fungsi untuk menambah data ketika spreadsheet kosong
 def handleAddData(oldData:list[list], inputList: list[list], month:str):
     if(len(oldData) > 0) :
@@ -157,7 +278,7 @@ def getTransaksiOnly(oldData:list = []):
     return [x for x in oldData if x[0]!= '']
 
 
-def handleMutasiTransaksi(oldData:list=[]):
+def getBertambahBerkurangAll(oldData:list=[]):
     oriData = oldData.copy()
     outputData = [
         ['Bertambah','',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0],
@@ -251,18 +372,38 @@ def getKolomBertambah(transactions:list, kolom:int) -> list:
     sumQty = 0
     sumTotal = 0
     indexResult = 1
+    
+    filtered = [row for row in transactions if parseNumber(row[kolom]) >= 0 and parseNumber(row[kolom-1]) >= 0]
+
+    for row in filtered:
+        if parseNumber(row[kolom-1]) == 0:
+            continue
+
+        sumQty = toDefaultNumber(parseNumber(row[kolom-1]) + parseNumber(sumQty))
+        sumTotal = toDefaultNumber(parseNumber(row[kolom]) + parseNumber(sumTotal))
+        
+        result.append([indexResult, row[0], row[kolom-1], row[(kolom)]])
+        indexResult+=1
+    
+    result.append(['', 'Jumlah', sumQty, sumTotal])
+
+    return result
+
+def getKolomPersediaanBertambah(transactions:list, kolom:int) -> list:
+    result = []
+    sumTotal = 0
+    indexResult = 1
 
     for row in transactions:
         if parseNumber(row[kolom]) <= 0:
             continue
 
         sumTotal = toDefaultNumber(parseNumber(row[kolom]) + parseNumber(sumTotal))
-        sumQty = toDefaultNumber(parseNumber(row[kolom-1]) + parseNumber(sumQty))
         
         result.append([indexResult, row[0], row[kolom-1], row[(kolom)]])
         indexResult+=1
     
-    result.append(['', 'Jumlah', sumQty, sumTotal])
+    result.append(['', 'Jumlah', 0, sumTotal])
 
     return result
 
@@ -285,3 +426,26 @@ def getKolomBerkurang(transactions:list, kolom:int) -> list:
     result.append(['', 'Jumlah', sumQty, sumTotal])
 
     return result
+
+def rekapMutasi(saldo: list = [0,0], bertambah: list = [0,0], berkurang: list = [0,0]):
+    output = []
+    sisa = [0,0]
+    berkurang = [ toDefaultNumber(toPositif(col)) for col in berkurang ]
+
+    sisa[0] = toDefaultNumber(parseNumber(saldo[0]) + parseNumber(bertambah[0]) - parseNumber(berkurang[0]))
+    sisa[1] = toDefaultNumber(parseNumber(saldo[1]) + parseNumber(bertambah[1]) - parseNumber(berkurang[1]))
+
+    output = saldo + bertambah + berkurang + sisa
+
+    return [output]
+
+def rekapMutasiPersediaan(saldo: int | str, bertambah: list = [0,0], berkurang: list = [0,0]):
+    output = []
+    sisa = ['',0]
+    berkurang = [ toDefaultNumber(toPositif(col)) for col in berkurang ]
+
+    sisa[1] = toDefaultNumber(parseNumber(saldo) + parseNumber(bertambah[1]) - parseNumber(berkurang[1]))
+
+    output = ['', saldo] + bertambah + berkurang + sisa
+
+    return [output]

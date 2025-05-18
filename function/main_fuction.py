@@ -31,3 +31,6 @@ def checkIsNumber(val)->bool:
         return True
     except:
         return False
+
+def toPositif(val)->bool:
+    return abs(parseNumber(val))
