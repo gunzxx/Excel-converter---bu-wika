@@ -449,3 +449,48 @@ def rekapMutasiPersediaan(saldo: int | str, bertambah: list = [0,0], berkurang: 
     output = ['', saldo] + bertambah + berkurang + sisa
 
     return [output]
+
+def handlePenyusutan(pages: list[page.Page]) -> list:
+    rowData = [0 for x in range(20)]
+    total = 0
+    # rowData = []
+
+    for page in pages:
+        table = page.extract_table()
+
+        rowData[0] = 'Akumulasi Penyusutan'
+        rowData[1] = ''
+
+        # mencari jumlah pengeluaran di tiap transaksi
+        if table:
+            table = table[3:]
+            # table = [row for row in table if row[2] != '' or row[2] != None]
+            for row in table:
+                if row[0] != 'J U M L A H' and '(' in row[2]:
+                    # rowData.append(row)
+                    # continue
+                    if 'persediaan' in row[1].lower():
+                        rowData[2] = toDefaultNumber(parseNumber(rowData[2]) + parseNumber(row[2]))
+                    elif 'tanah' in row[1].lower():
+                        rowData[4] = toDefaultNumber(parseNumber(rowData[4]) + parseNumber(row[2]))
+                    elif 'peralatan dan mesin' in row[1].lower():
+                        rowData[6] = toDefaultNumber(parseNumber(rowData[6]) + parseNumber(row[2]))
+                    elif 'gedung dan bangunan' in row[1].lower():
+                        rowData[8] = toDefaultNumber(parseNumber(rowData[8]) + parseNumber(row[2]))
+                    elif 'jalan dan jembatan' in row[1].lower() or 'irigasi' in row[1].lower() or 'jaringan' in row[1].lower():
+                        rowData[10] = toDefaultNumber(parseNumber(rowData[10]) + parseNumber(row[2]))
+                    elif 'aset tetap lainnya' in row[1].lower():
+                        rowData[12] = toDefaultNumber(parseNumber(rowData[12]) + parseNumber(row[2]))
+                    elif 'hak cipta' in row[1].lower() or 'lisensi' in row[1].lower() or 'software' in row[1].lower() or 'aset tak berwujud' in row[1].lower():
+                        rowData[16] = toDefaultNumber(parseNumber(rowData[16]) + parseNumber(row[2]))
+                    elif'aset tetap yang tidak digunakan' in row[1].lower():
+                        rowData[18] = toDefaultNumber(parseNumber(rowData[18]) + parseNumber(row[2]))
+                    total = toDefaultNumber(parseNumber(total) + parseNumber(row[2]))
+    rowData[-1] = total
+    return rowData
+
+def handleSaldoTerakhir(oldSaldo:list, penyusutan:list) -> list:
+    oriOldSaldo = oldSaldo.copy()
+    oriPenyusutan = penyusutan.copy()
+    saldoTerakhir = []
+    return saldoTerakhir
