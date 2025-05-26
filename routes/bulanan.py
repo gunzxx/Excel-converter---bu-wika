@@ -190,7 +190,7 @@ def bulanan_post():
     output_path = 'static/output/bulanan/'+str(time())+".xlsx"
     with pd.ExcelWriter(output_path) as writer:
         rincian.to_excel(writer, sheet_name='RINCIAN', index=False)
-        sheetBertambahBerkurang.to_excel(writer, sheet_name='Bertambah dan Berkurang', index=False)
+        sheetBertambahBerkurang.to_excel(writer, sheet_name='RINCIAN', index=False, startrow=len(rincian) + 3)
         
         sheetPersediaanBertambah.to_excel(writer, sheet_name="Persediaan", index=False, startrow=0)
         sheetPersediaanBerkurang.to_excel(writer, sheet_name="Persediaan", index=False, startrow=len(sheetPersediaanBertambah) + 3)
