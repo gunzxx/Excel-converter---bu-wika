@@ -8,7 +8,7 @@ import os
 
 # import sys, os
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../function')))
-from function.bulanan import handleAddData, pdfToList, handleSaldo, handleKuantitas, getTransaksiOnly, getBertambahBerkurangAll, getKolomBertambah, getKolomPersediaanBertambah, getKolomBerkurang, rekapMutasi, rekapMutasiPersediaan, handlePenyusutan
+from function.bulanan import handleAddData, pdfToList, handleSaldo, handleKuantitas, getTransaksiOnly, getBertambahBerkurangAll, getKolomBertambah, getKolomPersediaanBertambah, getKolomBerkurang, rekapMutasi, rekapMutasiPersediaan, handlePenyusutan, handleLaporanKdp, handleLaporanAtb
 
 bulanan = Blueprint('bulanan', __name__)
 
@@ -34,6 +34,8 @@ def bulanan_post():
     laporans = request.files.getlist('laporan')
     saldoInput = request.files['saldo']
     kuantitasInput = request.files['kuantitas']
+    # laporanKdp = request.files['laporanKdp']
+    laporanAtb = request.files['laporanAtb']
     finishData = []
     saldo = []
     penyusutan = []
@@ -43,7 +45,11 @@ def bulanan_post():
         penyusutan = handlePenyusutan(pages=pdf.pages)
     with pdfplumber.open(kuantitasInput) as pdf:
         saldo = handleKuantitas(pages=pdf.pages, saldo=saldo)
-    # return penyusutan
+    # with pdfplumber.open(laporanKdp) as pdf:
+    #     saldo = handleLaporanKdp(pages=pdf.pages, saldo=saldo)
+    with pdfplumber.open(laporanAtb) as pdf:
+        saldo = handleLaporanAtb(pages=pdf.pages, saldo=saldo)
+    # return saldo
 
     if(laporans[0]):
         with pdfplumber.open(laporans[0]) as pdf:

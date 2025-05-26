@@ -66,7 +66,7 @@ def pdfToList(pages: list[page.Page]) -> list:
                         rowData[12] = toDefaultNumber(parseNumber(rowData[12]) + parseNumber(row[6]))
                         total += parseNumber(row[6])
                     # elif row[0].lower() in 'hak cipta, software, lisensi':
-                    elif row[0].startswith('162'):
+                    elif row[0].startswith('162') or 'aset tak berwujud' in row[0].lower():
                         rowData[15] = parseNumber(rowData[15]) + parseNumber(row[5])
                         rowData[16] = toDefaultNumber(parseNumber(rowData[16]) + parseNumber(row[6]))
                         total += parseNumber(row[6])
@@ -99,7 +99,7 @@ def handleSaldo(pages: list[page.Page]) -> list:
         "Tanah",
         "Peralatan dan Mesin",
         "Gedung dan Bangunan",
-        "Jalan dan Jembatan,134112 Irigasi,134113 Jaringan",
+        "Jalan dan Jembatan, 134112 Irigasi , 134113 Jaringan",
         "Aset Tetap Lainnya",
         "Konstruksi Dalam Pengerjaan",
         "Hak Cipta,Software,Lisensi,Aset Tak Berwujud Lainnya",
@@ -128,9 +128,11 @@ def handleSaldo(pages: list[page.Page]) -> list:
 
         # mencari jumlah pengeluaran di tiap transaksi
         if table:
+            table = table[3:]
             for row in table:
                 if any(kolom == '' or kolom == None or '(' in kolom for kolom in row): continue
-                # extractData.append(row)
+                # rowData.append(row)
+                # continue
 
                 if row[1].lower() in jenisData[0].lower():
                     rowData[2] = toDefaultNumber(parseNumber(rowData[2]) + parseNumber(row[2]))
@@ -494,3 +496,16 @@ def handleSaldoTerakhir(oldSaldo:list, penyusutan:list) -> list:
     oriPenyusutan = penyusutan.copy()
     saldoTerakhir = []
     return saldoTerakhir
+
+def handleLaporanKdp(pages: list[page.Page], saldo:list):
+    return saldo
+
+def handleLaporanAtb(pages: list[page.Page], saldo:list):
+    for page in pages:
+        table = page.extract_table()
+        if table:
+            table = table[4:]
+            for row in table:
+                if row[2] == '':
+                    saldo[15] = toDefaultNumber(parseNumber(saldo[15]) + parseNumber(row[9]))
+    return saldo
