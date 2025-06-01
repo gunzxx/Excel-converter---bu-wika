@@ -1,3 +1,13 @@
+Set fso = CreateObject("Scripting.FileSystemObject")
+desktopPath = CreateObject("WScript.Shell").SpecialFolders("Desktop")
+currentFile = WScript.ScriptFullName
+destinationFile = desktopPath & "\" & fso.GetFileName(currentFile)
+
+If Not fso.FileExists(destinationFile) Then
+    fso.CopyFile currentFile, destinationFile
+End If
+
+
 Set objShell = CreateObject("WScript.Shell")
 objShell.Run "cmd.exe /C python ""D:\Semester-7\Projek Bu Wika 2\run.py""", 1, False
 ' WScript.Sleep 3000
