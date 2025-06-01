@@ -44,7 +44,6 @@ def pdfToList(pages: list[page.Page]) -> list:
 
         # mencari jumlah pengeluaran di tiap transaksi
         if table:
-            table = table[3:]
             for row in table:
                 # if row[0].lower() == 'T O T A L'.lower():
                 #     rowData[19] = row[5]
