@@ -9,8 +9,8 @@ app.register_blueprint(home)
 app.register_blueprint(bulanan)
 app.register_blueprint(tahunan)
 
-# if __name__ == "__main__":
-#     # Timer(1.5, open_browser).start()
-#     # app.run(debug=False)
-#     app.run(debug=True) # debug digunakan untuk mengaktifkan reloader dan mengaktifkan log terminal
-#     # open_browser()
+if __name__ == "__main__":
+    # Timer(1.5, open_browser).start()
+    # app.run(debug=False)
+    app.run(debug=True) # debug digunakan untuk mengaktifkan reloader dan mengaktifkan log terminal
+    # open_browser()

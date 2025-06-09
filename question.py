@@ -179,3 +179,49 @@ output = [
 dengan syarat:
 - jika ada bilangan negatif, maka row di hapus
 - jika semua nilai 0, maka row dihapus
+
+
+
+
+
+
+Saya ingin menggabungkan data berikut:
+oldData = [
+    ['row1', '', 0, 1, 0, 0],
+    ['', 'data1', 0, 1, 0, 0],
+    ['row2', '', 1, 0, 7, 9],
+    ['', 'data1', 0, 0, 2, 0],
+    ['', 'data2', 1, 0, 5, 9],
+    ['row3', '', 3, 0, 4, 7],
+    ['', 'data1', 0, 0, 0, 3],
+    ['', 'data2', 3, 0, 4, 4],
+    ['row5', '', 12, 0, 0, 0],
+    ['', 'data2', 12, 0, 0, 0],
+]
+data2 = [
+    ['row2', '', 2, 0, 4, 5],
+    ['row4', '', 0, 0, 3, 0],
+    ['row3', '', -1, 0, 0, 0],
+]
+
+menjadi:
+
+newData = [
+    ['row1', '', 0, 1, 0, 0],
+    ['', 'data1', 0, 1, 0, 0],
+    ['row2', '', 3, 0, 11, 14],
+    ['', 'data1', 0, 0, 2, 0],
+    ['', 'data2', 3, 0, 9, 14],
+    ['row3', '', 2, 0, 4, 7],
+    ['', 'data1', 0, 0, 0, 3],
+    ['', 'data2', 2, 0, 4, 4],
+    ['row4', '', 0, 0, 3, 0],
+    ['', 'data2', 0, 0, 3, 0],
+    ['row5', '', 12, 0, 0, 0],
+    ['', 'data2', 12, 0, 0, 0],
+]
+
+dengan syarat:
+- jika terdapat jenis data yang sama dan di row yang sama, , seperti "data2" di row2, maka akan ditambahkan, jika tidak maka akan buat di baris baru
+- jika ada postif ditambah negatif, akan dihitung seperti biasa
+bagaimana caranya?

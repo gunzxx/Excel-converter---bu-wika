@@ -8,7 +8,7 @@ import os
 
 # import sys, os
 # sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../function')))
-from function.bulanan import handleAddData, pdfToList, handleSaldo, handleKuantitas, getTransaksiOnly, getBertambahBerkurangAll, getKolomBertambah, getKolomPersediaanBertambah, getKolomBerkurang, rekapMutasi, rekapMutasiPersediaan, handlePenyusutan, handleLaporanKdp, handleLaporanAtb
+from function.bulanan import handleAddData, handleAddDoubleData, pdfToList, kdpPdfToList, atbPdfToList, handleSaldo, handleKuantitas, getTransaksiOnly, getBertambahBerkurangAll, getKolomBertambah, getKolomPersediaanBertambah, getKolomBerkurang, rekapMutasi, rekapMutasiPersediaan, handlePenyusutan, handleLaporanKdp, handleLaporanAtb
 
 bulanan = Blueprint('bulanan', __name__)
 
@@ -32,13 +32,43 @@ def bulanan_get():
 @bulanan.route('/bulanan', methods=['POST'])
 def bulanan_post():
     laporans = request.files.getlist('laporan')
+    
     saldoInput = request.files['saldo']
     kuantitasInput = request.files['kuantitas']
-    # laporanKdp = request.files['laporanKdp']
     laporanAtb = request.files['laporanAtb']
+    
+    kdpDatas = request.files.getlist('kdpDatas')
+    atbDatas = request.files.getlist('atbDatas')
+
     finishData = []
     saldo = []
     penyusutan = []
+    months = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER', 'INTRAKOMPTABEL', 'EKSTRAKOMPTABEL']
+
+
+    for i in range(len(laporans)):
+        if laporans[i]:
+            with pdfplumber.open(laporans[i]) as pdf:
+                data1 = pdfToList(pages=pdf.pages)
+                finishData = handleAddData(oldData=finishData, inputList=data1, month=months[i])
+    
+
+    for i in range(len(atbDatas)):
+        if atbDatas[i]:
+            with pdfplumber.open(atbDatas[i]) as pdf:
+                atbData = atbPdfToList(pages=pdf.pages)
+                # tes = atbData
+                finishData = handleAddDoubleData(oldData=finishData, newData=atbData, month=months[i])
+
+    
+    for i in range(len(kdpDatas)):
+        if kdpDatas[i]:
+            with pdfplumber.open(kdpDatas[i]) as pdf:
+                kdpData = kdpPdfToList(pages=pdf.pages)
+                finishData = handleAddDoubleData(oldData=finishData, newData=kdpData, month=months[i])
+    return finishData
+
+        
 
     with pdfplumber.open(saldoInput) as pdf:
         saldo = handleSaldo(pages=pdf.pages)
@@ -51,54 +81,6 @@ def bulanan_post():
         saldo = handleLaporanAtb(pages=pdf.pages, saldo=saldo)
     # return saldo
 
-    if(laporans[0]):
-        with pdfplumber.open(laporans[0]) as pdf:
-            data1 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data1, month="JANUARI")
-    if(laporans[1]):
-        with pdfplumber.open(laporans[1]) as pdf:
-            data2 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data2, month="FEBRUARI")
-    if(laporans[2]):
-        with pdfplumber.open(laporans[2]) as pdf:
-            data3 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data3, month="MARET")
-    if(laporans[3]):
-        with pdfplumber.open(laporans[3]) as pdf:
-            data4 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data4, month="APRIL")
-    if(laporans[4]):
-        with pdfplumber.open(laporans[4]) as pdf:
-            data5 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data5, month="MEI")
-    if(laporans[5]):
-        with pdfplumber.open(laporans[5]) as pdf:
-            data6 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data6, month="JUNI")
-    if(laporans[6]):
-        with pdfplumber.open(laporans[6]) as pdf:
-            data7 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data7, month="JULI")
-    if(laporans[7]):
-        with pdfplumber.open(laporans[7]) as pdf:
-            data8 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data8, month="AGUSTUS")
-    if(laporans[8]):
-        with pdfplumber.open(laporans[8]) as pdf:
-            data9 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data9, month="SEPTEMBER")
-    if(laporans[9]):
-        with pdfplumber.open(laporans[9]) as pdf:
-            data10 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data10, month="OKTOBER")
-    if(laporans[10]):
-        with pdfplumber.open(laporans[10]) as pdf:
-            data11 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data11, month="NOVEMBER")
-    if(laporans[11]):
-        with pdfplumber.open(laporans[11]) as pdf:
-            data12 = pdfToList(pages=pdf.pages)
-            finishData = handleAddData(oldData=finishData, inputList=data12, month="DESEMBER")
     
     transaksiOnly = getTransaksiOnly(finishData)
     bertambahBerkurang = getBertambahBerkurangAll(transaksiOnly)

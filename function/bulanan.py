@@ -1,5 +1,6 @@
 from pdfplumber import page
 import re
+from collections import OrderedDict
 
 from function.main_fuction import parseNumber, parseNumber2, toDefaultNumber, addNumber, toPositif
 
@@ -91,6 +92,179 @@ def pdfToList(pages: list[page.Page]) -> list:
             extractData.append(rowData)
 
     return extractData
+
+
+def kdpPdfToList(pages:list[page.Page], ) -> list:
+    extractData = []
+
+    for page in pages:
+        jenisTransaksi = ''
+        rowData = ['','',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        text = page.extract_text()
+        custom_settings = {
+            "vertical_strategy": "lines",
+            "horizontal_strategy": "text",
+            "snap_tolerance": 3,
+            "join_tolerance": 3,
+            "intersection_tolerance": 5,
+        }
+        table = page.extract_table(table_settings=custom_settings)
+        # mencari transaksi jenis transaksi yang tersedia
+        if text:
+            cocoks = re.findall(r"(?i)jenis transaksi :[:\-]?\s*(.*?)\s*kode", text, flags=re.MULTILINE | re.IGNORECASE)
+            for cocok in cocoks:
+                words = cocok.strip().split()
+                if words:
+                    kodeText = words[0]
+                    jenisText = " ".join(words[1:]) if len(words) > 1 else ""
+                    jenisTransaksi += f"{jenisText} ({kodeText})"
+        
+        # mengatur nilai rowData
+        if len(extractData) > 0:
+            if extractData[-1][0] == jenisTransaksi:
+                rowData = extractData[-1]
+            else:
+                total = 0
+                rowData[0] = jenisTransaksi
+        else:
+            total = 0
+            rowData[0] = jenisTransaksi
+
+        # mencari nilai kdp di tiap transaksi
+        if table:
+            table = table[3:]
+            for row in table:
+
+                if row[0] and row[0].strip() != 'KODE' and row[0].lower() != 'T O T A L'.lower() and (not row[2] or row[2].strip() == ''):
+                    if row[0].startswith('1361'):
+                        rowData[13] = parseNumber(rowData[13]) + parseNumber(row[3])
+                        rowData[14] = toDefaultNumber(parseNumber(rowData[14]) + parseNumber(row[4]))
+                        total += parseNumber(row[4])
+                    else:
+                        continue
+                else:
+                    continue
+        
+        # mengatur nilai data terakhir dengan nilai data baru dan memasukkan jumlah total
+        rowData[-1] = toDefaultNumber(total)
+        if len(extractData) > 0:
+            if extractData[-1][0] == jenisTransaksi:
+                extractData[-1] = rowData
+            else:
+                extractData.append(rowData)
+        else:
+            extractData.append(rowData)
+
+    return extractData
+
+
+def atbPdfToList(pages:list[page.Page], ) -> list:
+    extractData = []
+
+    for page in pages:
+        jenisTransaksi = ''
+        rowData = ['','',0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
+        text = page.extract_text()
+        custom_settings = {
+            "vertical_strategy": "lines",
+            "horizontal_strategy": "text",
+            "snap_tolerance": 3,
+            "join_tolerance": 3,
+            "intersection_tolerance": 5,
+        }
+        table = page.extract_table(table_settings=custom_settings)
+        
+        # mencari transaksi jenis transaksi yang tersedia
+        if text:
+            cocoks = re.findall(rf"(?i)jenis transaksi :[:\-]?\s*(.*?)\s*kode", text, flags=re.MULTILINE | re.IGNORECASE)
+            for cocok in cocoks:
+                words = cocok.strip().split()
+                if words:
+                    kodeText = words[0]
+                    jenisText = " ".join(words[1:]) if len(words) > 1 else ""
+                    jenisTransaksi += f"{jenisText} ({kodeText})"
+
+        # mengatur nilai rowData
+        if len(extractData) > 0:
+            if extractData[-1][0] == jenisTransaksi:
+                rowData = extractData[-1]
+            else:
+                total = 0
+                rowData[0] = jenisTransaksi
+        else:
+            total = 0
+            rowData[0] = jenisTransaksi
+
+        # mencari nilai kdp di tiap transaksi
+        if table:
+            table = table[3:]
+            for row in table:
+
+                if row[0] and row[0].lower() != 'T O T A L'.lower():
+                    if row[0].startswith('162'):
+                        rowData[15] = parseNumber(rowData[15]) + parseNumber(row[3])
+                        rowData[16] = toDefaultNumber(parseNumber(rowData[16]) + parseNumber(row[4]))
+                        total += parseNumber(row[4])
+                    else:
+                        continue
+                else:
+                    continue
+        
+        # mengatur nilai data terakhir dengan nilai data baru dan memasukkan jumlah total
+        rowData[-1] = toDefaultNumber(total)
+        if len(extractData) > 0:
+            if extractData[-1][0] == jenisTransaksi:
+                extractData[-1] = rowData
+            else:
+                extractData.append(rowData)
+        else:
+            extractData.append(rowData)
+
+    return extractData
+
+
+def handleAddDoubleData(oldData:list, newData:list, month:str) -> list:
+    outputData = []
+    structured = OrderedDict()
+
+    # Helper untuk tambah data
+    def add_row_data(jenis, bulan, data):
+        if jenis not in structured:
+            structured[jenis] = {}
+            # structured[jenis][''] = data
+        if bulan not in structured[jenis]:
+            structured[jenis][bulan] = [0] * 18
+        for i in range(18):
+            structured[jenis][bulan][i] += parseNumber(data[i])
+
+    i = 0
+    while i < len(oldData):
+        jenis = oldData[i][0]
+        i += 1
+        while i < len(oldData) and oldData[i][0] == '':
+            bulan = oldData[i][1]
+            data = oldData[i][2:]
+            add_row_data(jenis, bulan, data)
+            i += 1
+
+    for data in newData:
+        jenis = data[0]
+        base = data[2:]
+        add_row_data(jenis,month, base)
+
+
+    # proses dictionary
+    for jenisTransaksi in structured:
+        headerTransaksi = [jenisTransaksi, ''] + [0] * 18
+        for bulan in [data for data in structured[jenisTransaksi]]:
+            for i in range(len(structured[jenisTransaksi][bulan])):
+                headerTransaksi[i+2] += structured[jenisTransaksi][bulan][i]
+                headerTransaksi[i+2] = toDefaultNumber(headerTransaksi[i+2])
+        outputData.append(headerTransaksi)
+
+        for bulan in [data for data in structured[jenisTransaksi]]:
+            outputData.append(['',bulan] + [toDefaultNumber(x) for x in structured[jenisTransaksi][bulan]])
+    return outputData
 
 
 def handleSaldo(pages: list[page.Page]) -> list:
