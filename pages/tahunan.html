@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Import PDF</title>
+    <link rel="stylesheet" href="/static/sa2/sweetalert2.min.css" />
+    <link rel="stylesheet" href="/static/css/reset.css" />
+    <link rel="stylesheet" href="/static/css/tahunan.css" />
+    <link rel="stylesheet" href="/static/css/bg.css" />
+  </head>
+  <body>
+    <div class="card-container">
+      <div class="header">
+        <a href="/">
+          <img
+            src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAeCAYAAAA7MK6iAAAACXBIWXMAAAsTAAALEwEAmpwYAAAAhklEQVR4nO2WOwqAMBAFBz8XEJKb6aktRFt7LfUEsQkiaCrJruAOvCLVQMK+DRjGXymAWlrqgQGYgVJK6oARCDGNhjRIiN2DNLvYJaRZxR6YEtK3WYFOWhpi9qfJ6DNLQ+q51MRe4Kq3VAnllC9A+7lxUi0Q1cpUXRKqa/H6EajOk2EY3DkANGS6e2z3DR0AAAAASUVORK5CYII="
+            alt="left"
+          />
+        </a>
+        <h1>Unggah PDF untuk diolah ke excel.</h1>
+      </div>
+      <div class="content">
+        <form method="post" enctype="multipart/form-data">
+          <input type="file" name="pdf" accept=".pdf" required />
+          <button>Upload</button>
+        </form>
+      </div>
+      <div id="history">
+        <h2>Riwayat Laporan:</h2>
+        <div class="history-container">
+          {% for report in reports %}
+          <div class="history-list">
+            <p>{{ loop.index }}. {{ report[1] }}</p>
+            <div class="action-btn">
+              <button class="delete-btn" data-filename="/static/output/bulanan/{{ report[0] }}">Hapus</button>
+              <a href="/static/output/tahunan/{{ report[0] }}">Download</a>
+            </div>
+          </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div id="background">
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+      <div><span></span></div>
+    </div>
+
+    <script src="/static/js/jquery.js"></script>
+    <script src="/static/js/axios.js"></script>
+    <script src="/static/sa2/sweetalert2.min.js"></script>
+    <script src="/static/js/tahunan.js"></script>
+  </body>
+</html>
