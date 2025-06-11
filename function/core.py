@@ -24,7 +24,7 @@ def importModules(modules:list[object], subModules: object={}, sinonims: object=
 
 def installModule(module:str):
     try:
-        check_call([executable, "-m", "pip", "install", "-y", module])
+        check_call([executable, "-m", "pip", "install", module])
     except Exception as e:
         print(f"Gagal menginstall module '{module}'. \nError: {e}")
 
