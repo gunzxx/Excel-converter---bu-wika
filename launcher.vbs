@@ -9,7 +9,7 @@ End If
 
 
 Set objShell = CreateObject("WScript.Shell")
-objShell.Run "cmd.exe /k python ""D:\Semester-7\Projek Bu Wika 2\run.py""", 1, False
+objShell.Run "cmd.exe /k python run.py", 1, False
 ' WScript.Sleep 3000
 ' objShell.Run "http://127.0.0.1:5000", 1, False
 
