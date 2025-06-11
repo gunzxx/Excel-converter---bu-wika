@@ -1,5 +1,4 @@
 from flask import Blueprint, render_template, current_app
-from time import time
 from pathlib import Path
 from datetime import datetime
 
