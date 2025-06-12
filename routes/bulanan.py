@@ -29,6 +29,7 @@ def bulanan_get():
 
     return render_template('bulanan.html', reports=reports)
     
+@bulanan.route('/', methods=['POST'])
 @bulanan.route('/bulanan', methods=['POST'])
 def bulanan_post():
     laporans = request.files.getlist('laporan')
@@ -212,6 +213,7 @@ def bulanan_post():
     return send_file(output_path, as_attachment=True)
 
 
+@bulanan.route('/', methods=['DELETE'])
 @bulanan.route('/bulanan', methods=['DELETE'])
 def bulanan_delete():
     data = request.get_json()

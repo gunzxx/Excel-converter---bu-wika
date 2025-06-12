@@ -8,8 +8,8 @@ from waitress import serve
 from app import app
 
 def open_browser():
-    open_new("http://localhost")
+    open_new("http://localhost:5000")
 
 if __name__ == "__main__":
     Thread(target=open_browser).start()
-    serve(app, host="0.0.0.0", port=80)
+    serve(app, host="0.0.0.0", port=5000)
