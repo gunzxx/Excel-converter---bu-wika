@@ -18,17 +18,13 @@ body{
 }
 
 .header{
-    padding: 15px;
+    padding: 25px;
     display: flex;
     justify-content: center;
     position: relative;
+    padding-bottom: 50px;
 }
 
-.header > a{
-    position: absolute;
-    top: 20px;
-    left: 20px;
-}
 
 .content{
     width: 100%;
@@ -94,6 +90,9 @@ input{
     display: flex;
     flex-direction: column;
     gap: 20px;
+    padding: 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .3);
 }
 
 
