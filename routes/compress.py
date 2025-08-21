@@ -3,6 +3,7 @@ import pdfplumber
 import pandas as pd
 from os.path import abspath
 from datetime import datetime
+from time import time
 from pathlib import Path
 
 from function.compress import pdfToList
@@ -32,4 +33,8 @@ def compress_post():
     with pdfplumber.open(file) as pdf:
         finishData = pdfToList(pdf.pages)
 
+    finishFrame = pd.DataFrame([finishData])
+    output_path = 'static/output/bulanan/'+str(time())+".xlsx"
+    finishFrame.to_excel(output_path, index=False)
     return finishData
+    return send_file(output_path, as_attachment=True)

@@ -48,26 +48,26 @@ def bulanan_post():
     months = ['JANUARI', 'FEBRUARI', 'MARET', 'APRIL', 'MEI', 'JUNI', 'JULI', 'AGUSTUS', 'SEPTEMBER', 'OKTOBER', 'NOVEMBER', 'DESEMBER', 'INTRAKOMPTABEL', 'EKSTRAKOMPTABEL']
 
 
-    # for i in range(len(laporans)):
-    #     if laporans[i]:
-    #         with pdfplumber.open(laporans[i]) as pdf:
-    #             data1 = pdfToList(pages=pdf.pages)
-    #             finishData = handleAddData(oldData=finishData, inputList=data1, month=months[i])
+    for i in range(len(laporans)):
+        if laporans[i]:
+            with pdfplumber.open(laporans[i]) as pdf:
+                data1 = pdfToList(pages=pdf.pages)
+                finishData = handleAddData(oldData=finishData, inputList=data1, month=months[i])
     
 
-    # for i in range(len(atbDatas)):
-    #     if atbDatas[i]:
-    #         with pdfplumber.open(atbDatas[i]) as pdf:
-    #             atbData = atbPdfToList(pages=pdf.pages)
-    #             # tes = atbData
-    #             finishData = handleAddDoubleData(oldData=finishData, newData=atbData, month=months[i])
+    for i in range(len(atbDatas)):
+        if atbDatas[i]:
+            with pdfplumber.open(atbDatas[i]) as pdf:
+                atbData = atbPdfToList(pages=pdf.pages)
+                # tes = atbData
+                finishData = handleAddDoubleData(oldData=finishData, newData=atbData, month=months[i])
 
     
-    # for i in range(len(kdpDatas)):
-    #     if kdpDatas[i]:
-    #         with pdfplumber.open(kdpDatas[i]) as pdf:
-    #             kdpData = kdpPdfToList(pages=pdf.pages)
-    #             finishData = handleAddDoubleData(oldData=finishData, newData=kdpData, month=months[i])
+    for i in range(len(kdpDatas)):
+        if kdpDatas[i]:
+            with pdfplumber.open(kdpDatas[i]) as pdf:
+                kdpData = kdpPdfToList(pages=pdf.pages)
+                finishData = handleAddDoubleData(oldData=finishData, newData=kdpData, month=months[i])
     # return finishData
 
         
@@ -75,10 +75,10 @@ def bulanan_post():
     with pdfplumber.open(saldoInput) as pdf:
         saldo = handleSaldo(pages=pdf.pages)
         penyusutan = handlePenyusutan(pages=pdf.pages)
-    with pdfplumber.open(kuantitasInput) as pdf:
-        # jumlah_halaman = len(pdf.pages)
-        saldo = handleKuantitas(pages=pdf.pages, saldo=saldo)
-    # return {"jumlah_halaman": jumlah_halaman}
+    kuantitasFrame = pd.read_excel(kuantitasInput)
+    kuantitas = kuantitasFrame.values.tolist()[0]
+    saldo = handleKuantitas(kuantitas=kuantitas, saldo=saldo)
+    # return saldo
     # with pdfplumber.open(laporanKdp) as pdf:
     #     saldo = handleLaporanKdp(pages=pdf.pages, saldo=saldo)
     with pdfplumber.open(laporanAtb) as pdf:
