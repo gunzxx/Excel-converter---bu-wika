@@ -14,15 +14,29 @@ body{
     background: #fefefe;
     box-shadow: 0 0 10px rgba(0, 0, 0, .3);
     padding: 40px;
-    margin: 0 0 30px;
+    margin: 30px 0 30px;
 }
 
 .header{
     padding: 25px;
     display: flex;
+    flex-direction: column;
     justify-content: center;
+    align-items: center;
     position: relative;
     padding-bottom: 50px;
+}
+.compress-container{
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    padding: 10px 40px 0;
+}
+.compress-container .compress{
+    background: navy;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
 }
 
 

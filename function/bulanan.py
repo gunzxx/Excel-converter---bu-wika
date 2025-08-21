@@ -292,7 +292,7 @@ def handleSaldo(pages: list[page.Page]) -> list:
             # "join_tolerance": 3,
             # "intersection_tolerance": 5,
         }
-        table = page.extract_table(table_settings=custom_settings)
+        table = page.extract_table()
 
         # mencari tahun jenis anggaran
         if text:
@@ -340,7 +340,7 @@ def handleSaldo(pages: list[page.Page]) -> list:
     rowData[-1] = toDefaultNumber(total)
     return rowData
 
-def handleKuantitas(pages: list[page.Page], saldo: list) -> list:
+def handleKuantitas(pages: list[page.Page], saldo: list):
     rowData = saldo.copy()
     extract = []
     jenisData = [
@@ -354,7 +354,7 @@ def handleKuantitas(pages: list[page.Page], saldo: list) -> list:
         "Aset Tetap yang tidak digunakan dalam operasi pemerintahan",
     ]
 
-    for page in pages:
+    for page in pages[:len(pages)-1]:
         tahunAnggaran = ''
         text = page.extract_text()
         table = page.extract_table()

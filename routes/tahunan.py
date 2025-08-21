@@ -1,7 +1,7 @@
 from flask import Blueprint, render_template, request, send_file, current_app, jsonify
 import pdfplumber
-from time import time
 import pandas as pd
+from time import time
 from pathlib import Path
 from datetime import datetime
 import os
