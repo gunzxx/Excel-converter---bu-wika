@@ -54,20 +54,23 @@ def bulanan_post():
                 data1 = pdfToList(pages=pdf.pages)
                 finishData = handleAddData(oldData=finishData, inputList=data1, month=months[i])
     
-
+    # return finishData
+    tes = []
     for i in range(len(atbDatas)):
         if atbDatas[i]:
             with pdfplumber.open(atbDatas[i]) as pdf:
                 atbData = atbPdfToList(pages=pdf.pages)
-                # tes = atbData
                 finishData = handleAddDoubleData(oldData=finishData, newData=atbData, month=months[i])
+    # return finishData
 
     
     for i in range(len(kdpDatas)):
         if kdpDatas[i]:
             with pdfplumber.open(kdpDatas[i]) as pdf:
                 kdpData = kdpPdfToList(pages=pdf.pages)
+                tes.append(kdpData)
                 finishData = handleAddDoubleData(oldData=finishData, newData=kdpData, month=months[i])
+    # return tes
     # return finishData
 
         
@@ -75,9 +78,12 @@ def bulanan_post():
     with pdfplumber.open(saldoInput) as pdf:
         saldo = handleSaldo(pages=pdf.pages)
         penyusutan = handlePenyusutan(pages=pdf.pages)
-    kuantitasFrame = pd.read_excel(kuantitasInput)
-    kuantitas = kuantitasFrame.values.tolist()[0]
-    saldo = handleKuantitas(kuantitas=kuantitas, saldo=saldo)
+    with pdfplumber.open(kuantitasInput) as pdf:
+        saldo = handleKuantitas(pages=pdf.pages, saldo=saldo)
+        # penyusutan = handleKuantitas(pages=pdf.pages)
+    # kuantitasFrame = pd.read_excel(kuantitasInput)
+    # kuantitas = kuantitasFrame.values.tolist()[0]
+    # saldo = handleKuantitas(kuantitas=kuantitas, saldo=saldo)
     # return saldo
     # with pdfplumber.open(laporanKdp) as pdf:
     #     saldo = handleLaporanKdp(pages=pdf.pages, saldo=saldo)
