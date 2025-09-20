@@ -68,7 +68,7 @@ def bulanan_post():
         if kdpDatas[i]:
             with pdfplumber.open(kdpDatas[i]) as pdf:
                 kdpData = kdpPdfToList(pages=pdf.pages)
-                tes.append(kdpData)
+                # tes.append(kdpData)
                 finishData = handleAddDoubleData(oldData=finishData, newData=kdpData, month=months[i])
     # return tes
     # return finishData

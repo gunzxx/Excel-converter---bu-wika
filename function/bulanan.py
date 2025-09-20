@@ -82,16 +82,17 @@ def pdfToList(pages: list[page.Page]) -> list:
                     continue
         
         # mengatur nilai data terakhir dengan nilai data baru dan memasukkan jumlah total
-        rowData[-1] = toDefaultNumber(total)
-        if len(extractData) > 0:
-            if extractData[-1][0] == jenisTransaksi:
-                extractData[-1] = rowData
+        if any(any(cell and cell.strip() for cell in row) for row in table[3:-1]):
+            rowData[-1] = toDefaultNumber(total)
+            if len(extractData) > 0:
+                if extractData[-1][0] == jenisTransaksi:
+                    extractData[-1] = rowData
+                else:
+                    extractData.append(rowData)
             else:
                 extractData.append(rowData)
-        else:
-            extractData.append(rowData)
 
-    return extractData
+            return extractData
 
 
 def kdpPdfToList(pages:list[page.Page], ) -> list:
@@ -146,16 +147,17 @@ def kdpPdfToList(pages:list[page.Page], ) -> list:
                     continue
         
         # mengatur nilai data terakhir dengan nilai data baru dan memasukkan jumlah total
-        rowData[-1] = toDefaultNumber(total)
-        if len(extractData) > 0:
-            if extractData[-1][0] == jenisTransaksi:
-                extractData[-1] = rowData
+        if any(any(cell and cell.strip() for cell in row) for row in table[3:-1]):
+            rowData[-1] = toDefaultNumber(total)
+            if len(extractData) > 0:
+                if extractData[-1][0] == jenisTransaksi:
+                    extractData[-1] = rowData
+                else:
+                    extractData.append(rowData)
             else:
                 extractData.append(rowData)
-        else:
-            extractData.append(rowData)
 
-    return extractData
+            return extractData
 
 
 def atbPdfToList(pages:list[page.Page], ) -> list:
@@ -209,21 +211,26 @@ def atbPdfToList(pages:list[page.Page], ) -> list:
                         continue
                 else:
                     continue
-        
+
         # mengatur nilai data terakhir dengan nilai data baru dan memasukkan jumlah total
         rowData[-1] = toDefaultNumber(total)
-        if len(extractData) > 0:
-            if extractData[-1][0] == jenisTransaksi:
-                extractData[-1] = rowData
+
+        if any(any(cell and cell.strip() for cell in row) for row in table[3:-1]):
+            if len(extractData) > 0:
+                if extractData[-1][0] == jenisTransaksi:
+                    extractData[-1] = rowData
+                else:
+                    extractData.append(rowData)
             else:
                 extractData.append(rowData)
-        else:
-            extractData.append(rowData)
 
-    return extractData
+            return extractData
 
 
 def handleAddDoubleData(oldData:list, newData:list, month:str) -> list:
+    if not newData:
+        return oldData
+
     outputData = []
     structured = OrderedDict()
 
@@ -414,6 +421,9 @@ def handleKuantitas(pages: list[page.Page], saldo: list) -> list:
 
 # Fungsi untuk menambah data ketika spreadsheet kosong
 def handleAddData(oldData:list[list], inputList: list[list], month:str):
+    if not inputList:
+        return oldData
+
     if(len(oldData) > 0) :
         rowMap = {}
         newData = []

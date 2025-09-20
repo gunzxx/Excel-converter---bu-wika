@@ -21,5 +21,5 @@ def open_browser():
 if __name__ == "__main__":
     # Timer(1.5, open_browser).start()
     # app.run(debug=False)
-    Thread(target=open_browser).start()
-    app.run(debug=True, use_reloader=False) # debug digunakan untuk mengaktifkan reloader dan mengaktifkan log terminal
+    # Thread(target=open_browser).start()
+    app.run(debug=True) # debug digunakan untuk mengaktifkan reloader dan mengaktifkan log terminal
