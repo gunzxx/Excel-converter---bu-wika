@@ -1,0 +1,165 @@
+body{
+    display: flex;
+    min-height: 100vh;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 30px;
+}
+
+.card-container{
+    width: 80%;
+    border-radius: 0 0 10px 10px;
+    text-align: center;
+    background: #fefefe;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    padding: 40px;
+    margin: 30px 0 30px;
+}
+
+.header{
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    /* padding-bottom: 50px; */
+}
+.compress-container{
+    width: 100%;
+    display: flex;
+    justify-content: start;
+    padding: 10px 40px 0;
+}
+.compress-container .compress{
+    background: navy;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: none;
+}
+
+
+.content{
+    width: 100%;
+    padding: 20px;
+}
+
+form{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+}
+
+.form-group{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: start;
+}
+
+input{
+    width: 100%;
+    border: 1px solid #000;
+    border: 0;
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+    border-radius: 10px;
+    padding: 10px;
+    background: #fefefe;
+}
+
+.card-container button{
+    /* width: fit-content; */
+    width: 100%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #26d2e9;
+    color: white;
+    cursor: pointer;
+}
+
+.card-container button:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+}
+
+
+.form-container{
+    width: 100%;
+    /* background: yellow; */
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    /* align-items: space-between; */
+    gap: 30px;
+    flex-wrap: wrap;
+}
+
+.card-form{
+    /* background: red; */
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 10px;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(0, 0, 0, .3);
+}
+
+
+#history{
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 30px;
+}
+#history h2{
+    margin-bottom: 15px;
+}
+.history-container{
+    width: 100%;
+    padding: 0 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+.history-list{
+    display: flex;
+    padding-bottom: 10px;
+    border-bottom: 1px solid rgba(0, 0, 0, .3);
+    justify-content: space-between;
+    align-items: center;
+}
+
+.action-btn{
+    width: 15%;
+    display: flex;
+    justify-content: end;
+    align-items: center;
+    gap: 10px;
+}
+.action-btn > button{
+    width: min-content;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #26d2e9;
+    color: white;
+    cursor: pointer;
+}
+.action-btn > a{
+    width: 100%;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 10px;
+    background: #26d2e9;
+    color: white;
+    cursor: pointer;
+    text-decoration: none;
+    font-size: 12px;
+}
+.action-btn > a:hover{
+    box-shadow: 0 0 10px rgba(0, 0, 0, .3);
+}
